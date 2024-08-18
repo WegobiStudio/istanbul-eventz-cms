@@ -1,10 +1,13 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Models
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HomePage>
 
 @{
     Layout = "master.cshtml";
+    var partnersImages = Model.Value<IEnumerable<IPublishedContent>>("partners");
+
 }
 
 @section HeroVideo {
@@ -26,33 +29,44 @@
 </div>
 
 <div class="home-cards">
-    @foreach (var card in Model.CompanyValues)
+    @if (Model.CompanyValues != null)
     {
-        var cardContent = card.Content as CompanyValueCard;
-        <div class="home-cards-item">
-            <div class="top">
-                <div class="icon">
-                    @Html.Raw(cardContent.Icon)
+        @foreach (var card in Model.CompanyValues)
+        {
+            var cardContent = card.Content as CompanyValueCard;
+            if (cardContent != null)
+            {
+                <div class="home-cards-item">
+                    <div class="top">
+                        <div class="icon">
+                            @Html.Raw(cardContent.Icon)
+                        </div>
+                        <span class="title">@cardContent.Title</span>
+                    </div>
+                    <div class="content">
+                        <span>@cardContent.Description</span>
+                    </div>
                 </div>
-                <span class="title">@cardContent.Title</span>
-            </div>
-            <div class="content">
-                <span>@cardContent.Description</span>
-            </div>
-        </div>
+            }
+        }
     }
 </div>
 
 <div class="experience-section">
     <span class="text">@Model.ExperienceText</span>
     <div class="experience-cards">
-        @foreach (var card in Model.ExperienceCards)
+        @if (Model.ExperienceCards != null)
         {
-            var cardContent = card.Content as ExperienceItem;
-            <div class="experience-cards-item">
-                <div class="counter">@cardContent.Value("counter")</div>
-                <span>@cardContent.Value("description")</span>
-            </div>
+            @foreach (var card in Model.ExperienceCards)
+            {
+                var cardContent = card.Content as ExperienceItem;
+                @if (cardContent != null){
+                    <div class="experience-cards-item">
+                        <div class="counter">@cardContent.Counter</div>
+                        <span>@cardContent.Description</span>
+                    </div>
+                }
+            }
         }
     </div>
 </div>
@@ -63,24 +77,30 @@
         <span>@Model.ServicesSubtitle</span>
     </div>
     <div class="services-cards">
-        @foreach (var service in Model.ServiceItems)
+        @if (Model.ServiceItems != null)
         {
-            var serviceContent = service.Content as IPublishedElement;
-            <div class="services-item">
-                <a href="@serviceContent.Value<IPublishedContent>("link")?.Url()"></a>
-                <div class="image">
-                    <img src="@serviceContent.Value<IPublishedContent>("serviceImage")?.Url()" alt="">
-                </div>
-                <div class="content">
-                    <h5>
-                        <div>@serviceContent.Value("serviceTitle")</div>
-                        <div class="icon">
-                            @Html.Partial("Icons/ArrowIcon")
+            @foreach (var service in Model.ServiceItems)
+            {
+                var serviceContent = service.Content as ServiceItem;
+                if (serviceContent != null)
+                {
+                    <div class="services-item">
+                        <a href="@serviceContent.CallToActionLink?.Url()"></a>
+                        <div class="image">
+                            <img src="@serviceContent.ServiceImage?.Url()" alt="">
                         </div>
-                    </h5>
-                    <span>@serviceContent.Value("serviceDescription")</span>
-                </div>
-            </div>
+                        <div class="content">
+                            <h5>
+                                <div>@serviceContent.ServiceTitle</div>
+                                <div class="icon">
+                                    @await Html.PartialAsync("Icons/ArrowIcon")
+                                </div>
+                            </h5>
+                            <span>@serviceContent.ServiceDescription</span>
+                        </div>
+                    </div>
+                }
+            }
         }
     </div>
 </div>
@@ -92,15 +112,22 @@
     </div>
     <div class="last-events-cards">
         <div class="left">
-            @foreach (var eventItem in Model.EventCards.Take(3))
+            @if (Model.EventCards != null && Model.EventCards.Skip(3).Take(3).Any())
             {
-                @Html.Partial("EventCard", eventItem)
+                @foreach (var eventItem in Model.EventCards.Take(3))
+                {
+                    @await Html.PartialAsync("EventCard", eventItem)
+                }
             }
         </div>
         <div class="right">
-            @foreach (var eventItem in Model.EventCards.Skip(3).Take(3))
+            @if (Model.EventCards != null && Model.EventCards.Skip(3).Take(3).Any())
             {
-                @Html.Partial("EventCard", eventItem, new ViewDataDictionary(ViewData) { { "IsBigger", eventItem == Model.EventCards.Skip(3).Take(3).ElementAt(1) } })
+                @foreach (var eventItem in Model.EventCards.Skip(3).Take(3))
+                {
+                    var secondEventCard = Model.EventCards.Skip(3).Take(3).ElementAt(1);
+                    @await Html.PartialAsync("EventCard", eventItem, new ViewDataDictionary(ViewData) { { "IsBigger", eventItem == secondEventCard } })
+                }
             }
         </div>
     </div>
@@ -116,19 +143,25 @@
             <div class="splide splide-testimonial" role="group">
                 <div class="splide__track">
                     <ul class="splide__list">
-                        @foreach (var testimonial in Model.Testimonials)
+                        @if (Model.Testimonials != null)
                         {
-                            var testimonialContent = testimonial.Content as IPublishedElement;
-                            <li class="splide__slide">
-                                <span>@testimonialContent.Value("testimonialText")</span>
-                                <h5>@testimonialContent.Value("testimonialBy")</h5>
-                            </li>
+                            @foreach (var testimonial in Model.Testimonials)
+                            {
+                                var testimonialContent = testimonial.Content as Testimonial;
+                                if (testimonialContent != null)
+                                {
+                                    <li class="splide__slide">
+                                        <span>@testimonialContent.TestimonialText</span>
+                                        <h5>@testimonialContent.TestimonialBy</h5>
+                                    </li>
+                                }
+                            }
                         }
                     </ul>
                 </div>
                 <div class="splide__arrows">
-                    @Html.Partial("Icons/NextArrow")
-                    @Html.Partial("Icons/PrevArrow")
+                    @await Html.PartialAsync("Icons/NextArrow")
+                    @await Html.PartialAsync("Icons/PrevArrow")
                 </div>
             </div>
         </div>
@@ -145,12 +178,14 @@
     <div id="image-slider" class="splide brands-area">
         <div class="splide__track">
             <div class="splide__list">
-                @foreach (var brand in Model.Partners)
+                @if (partnersImages != null)
                 {
-                    var brandContent = brand.Content as IPublishedElement;
-                    <div class="splide__slide brand-item">
-                        <img src="@brandContent.Value<IPublishedContent>("image")?.Url()" alt="">
-                    </div>
+                    @foreach (var image in partnersImages)
+                    {
+                        <div class="splide__slide brand-item">
+                            <img src="@(image.Url() ?? "#")" alt="">
+                        </div>
+                    }
                 }
             </div>
         </div>
@@ -164,34 +199,44 @@
     </div>
     <div class="contact-area">
         <div class="contact-area-offices">
-            @foreach (var office in Model.Offices)
+            @if (Model.Offices != null)
             {
-                var officeContent = office.Content as IPublishedElement;
-                var phoneNumber = officeContent.Value<string>("phoneNumber");
-                var phoneLink = $"tel:{phoneNumber?.Replace(" ", "")}";
-                <div class="office-item">
-                    <h4>@officeContent.Value("officeName")</h4>
-                    <div class="item">
-                        <a href="#">
-                            <div class="icon">
-                                @Html.Partial("Icons/LocationIcon")
+                @foreach (var office in Model.Offices)
+                {
+                    var officeContent = office.Content as Office;
+                    @if (officeContent != null)
+                    {
+                    var phoneNumber = officeContent.PhoneNumber;
+                    var phoneLink = $"tel:{phoneNumber?.Replace(" ", "")}";
+                        <div class="office-item">
+                            <h4>@officeContent.OfficeName</h4>
+                            <div class="item">
+                                <a href="#">
+                                    <div class="icon">
+                                        @await Html.PartialAsync("Icons/LocationIcon")
+                                    </div>
+                                    <span>@officeContent.OfficeAddress</span>
+                                </a>
                             </div>
-                            <span>@officeContent.Value("officeAddress")</span>
-                        </a>
-                    </div>
-                    <div class="item">
-                        <a href="@phoneLink">
-                            <div class="icon">
-                                @Html.Partial("Icons/PhoneIcon")
+                            <div class="item">
+                                <a href="@phoneLink">
+                                    <div class="icon">
+                                        @await Html.PartialAsync("Icons/PhoneIcon")
+                                    </div>
+                                    <span>@phoneNumber</span>
+                                </a>
                             </div>
-                            <span>@phoneNumber</span>
-                        </a>
-                    </div>
-                </div>
+                        </div>
+                    }
+                }
             }
         </div>
         <div class="contact-area-form">
-            @Html.Partial("ContactForm")
+            @await Html.PartialAsync("ContactForm")
         </div>
     </div>
 </div>
+
+@section BodyScripts {
+    <script src="~/Scripts/js/splide-config.js"></script>
+}

@@ -1,4 +1,4 @@
-﻿@model ContentModels.HomePage
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
 
 <form>
     <div class="form-item-ctr">
@@ -31,7 +31,7 @@
     <div class="checkbox-group">
         <label class="checkbox-label">
             <input type="checkbox" id="privacy-policy" required>
-            I have read and approve the <a href="@Model.PrivacyPolicyLink">Privacy Policy.</a>
+            I have read and approve the <a href="#">Privacy Policy.</a>
         </label>
     </div>
     <button type="submit">Submit</button>
