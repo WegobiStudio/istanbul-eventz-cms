@@ -1,0 +1,51 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models.Blocks;
+
+@{
+    Layout = "master.cshtml";
+    var serviceItems = Model.Value<IEnumerable<BlockListItem>>("serviceItems")?.Select(x => x.Content);
+}
+
+<div class="services-page">
+   <div class="page-title-container">
+      <h2>
+         @(Model.Value<string>("pageTitle"))
+      </h2>
+      <div>
+         <span>
+         @(Model.Value<string>("pageSubtitle"))
+         </span>
+         <p class="support-text">
+            @(Model.Value<string>("pageDescription"))
+         </p>
+      </div>
+   </div>
+
+   <div class="services-items">
+      @if (serviceItems != null)
+      {
+          foreach (var serviceItem in serviceItems)
+          {
+              <div class="service-item">
+                  <div class="service-item__image">
+                      <img src="@(serviceItem.Value<IPublishedContent>("serviceImage")?.Url() ?? "#")" alt="">
+                  </div>
+                  <div class="service-item__content">
+                      <h3>@(serviceItem.Value<string>("serviceTitle"))</h3>
+                      <span class="support-text">@(serviceItem.Value<string>("serviceDescription"))</span>
+                      <a href="@(serviceItem.Value<IPublishedContent>("callToActionLink")?.Url() ?? "#")">
+                          <span>@(serviceItem.Value<string>("callToActionText"))</span>
+                          <div class="icon">
+                              <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M8.61217 16.7501L17.0005 8.49984C14.8965 6.43629 10.7162 2.3131 8.61216 0.249511L7.55356 1.27389C9.44623 3.12975 11.9497 5.60263 14.1584 7.77165L0.500013 7.77159L0.500007 9.22824L14.1584 9.22827L7.55357 15.7147L8.61217 16.7501Z" fill="#333333" />
+                              </svg>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+              <div class="section-divider"></div>
+          }
+      }
+   </div>
+</div>

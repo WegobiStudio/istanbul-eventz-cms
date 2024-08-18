@@ -1,0 +1,106 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models.Blocks;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPublishedContent>
+
+@{
+    Layout = "master.cshtml";
+    var missionText = Model.Value<string>("missionText");
+    var visionText = Model.Value<string>("visionText");
+    var galleryImages = Model.Value<IEnumerable<IPublishedContent>>("galleryImages");
+    var experienceCards = Model.Value<IEnumerable<BlockListItem>>("experienceCards")?.Select(x => x.Content);
+    var companyValues = Model.Value<IEnumerable<BlockListItem>>("companyValueCards")?.Select(x => x.Content);
+}
+
+<div class="about-us">
+   <div class="page-title-container">
+      <h2>@(Model.Value<string>("pageTitle"))</h2>
+      <div>
+         <span>@(Model.Value<string>("pageSubtitle"))</span>
+         <p class="support-text">@(Model.Value<string>("pageDescription"))</p>
+      </div>
+   </div>
+   
+   <div class="big-image">
+      <img src="@(Model.Value<IPublishedContent>("mainImage")?.Url() ?? "#")" alt="">
+   </div>
+   
+   <div class="ms-vs-container">
+      <div>
+         <h5>Mission</h5>
+         <span class="support-text">@missionText</span>
+      </div>
+      <div>
+         <h5>Vision</h5>
+         <span class="support-text">@visionText</span>
+      </div>
+   </div>
+   
+   <div class="section-divider"></div>
+
+   <div class="quote-container">
+      <div class="quote-inner">
+         <div class="quote-content">
+            <span>@(Model.Value<string>("quote"))</span>
+            <div class="left-quote">
+                <svg xmlns="http://www.w3.org/2000/svg" width="85" height="68" viewBox="0 0 85 68" fill="none">
+                    <path opacity="0.2" d="M21.0935 68C17.1194 68 13.8677 67.1905 11.3387 65.5714C8.80968 63.9524 6.73226 61.8836 5.10645 59.3651C3.3 56.3069 2.03548 53.1587 1.3129 49.9206C0.770968 46.5026 0.5 43.7143 0.5 41.5556C0.5 32.7407 2.75806 24.7355 7.27419 17.5397C11.7903 10.3439 18.8355 4.49736 28.4097 0L30.8484 4.85714C25.2484 7.19577 20.371 10.8836 16.2161 15.9206C12.2419 20.9577 10.2548 26.0847 10.2548 31.3016C10.2548 33.4603 10.5258 35.3492 11.0677 36.9683C13.9581 34.6296 17.3 33.4603 21.0935 33.4603C25.7903 33.4603 29.8548 34.9894 33.2871 38.0476C36.7194 41.1058 38.4355 45.3333 38.4355 50.7302C38.4355 55.7672 36.7194 59.9048 33.2871 63.1429C29.8548 66.381 25.7903 68 21.0935 68ZM67.1581 68C63.1839 68 59.9323 67.1905 57.4032 65.5714C54.8742 63.9524 52.7968 61.8836 51.171 59.3651C49.3645 56.3069 48.1 53.1587 47.3774 49.9206C46.8355 46.5026 46.5645 43.7143 46.5645 41.5556C46.5645 32.7407 48.8226 24.7355 53.3387 17.5397C57.8548 10.3439 64.9 4.49736 74.4742 0L76.9129 4.85714C71.3129 7.19577 66.4355 10.8836 62.2807 15.9206C58.3065 20.9577 56.3194 26.0847 56.3194 31.3016C56.3194 33.4603 56.5903 35.3492 57.1323 36.9683C60.0226 34.6296 63.3645 33.4603 67.1581 33.4603C71.8548 33.4603 75.9194 34.9894 79.3516 38.0476C82.7839 41.1058 84.5 45.3333 84.5 50.7302C84.5 55.7672 82.7839 59.9048 79.3516 63.1429C75.9194 66.381 71.8548 68 67.1581 68Z" fill="#333333"></path>
+                </svg>
+            </div>
+            <div class="right-quote">
+                <svg xmlns="http://www.w3.org/2000/svg" width="73" height="58" viewBox="0 0 73 58" fill="none">
+                    <path opacity="0.2" d="M54.8484 6.08624e-06C58.2548 6.38404e-06 61.0419 0.690482 63.2097 2.07144C65.3774 3.45239 67.1581 5.21694 68.5516 7.36509C70.1 9.97356 71.1839 12.6587 71.8032 15.4206C72.2677 18.336 72.5 20.7143 72.5 22.5556C72.5 30.0741 70.5645 36.9021 66.6935 43.0397C62.8226 49.1772 56.7839 54.164 48.5774 58L46.4871 53.8571C51.2871 51.8624 55.4677 48.7169 59.029 44.4206C62.4355 40.1243 64.1387 35.7513 64.1387 31.3016C64.1387 29.4603 63.9065 27.8492 63.4419 26.4683C60.9645 28.463 58.1 29.4603 54.8484 29.4603C50.8226 29.4603 47.3387 28.1561 44.3968 25.5476C41.4548 22.9391 39.9839 19.3333 39.9839 14.7302C39.9839 10.4339 41.4548 6.90477 44.3968 4.14287C47.3387 1.38096 50.8226 5.73429e-06 54.8484 6.08624e-06ZM15.3645 2.63445e-06C18.771 2.93225e-06 21.5581 0.690479 23.7258 2.07143C25.8935 3.45238 27.6742 5.21693 29.0677 7.36508C30.6161 9.97355 31.7 12.6587 32.3193 15.4206C32.7839 18.336 33.0161 20.7143 33.0161 22.5556C33.0161 30.0741 31.0806 36.9021 27.2097 43.0397C23.3387 49.1772 17.3 54.164 9.09354 58L7.00321 53.8571C11.8032 51.8624 15.9839 48.7169 19.5451 44.4206C22.9516 40.1243 24.6548 35.7513 24.6548 31.3016C24.6548 29.4603 24.4226 27.8492 23.9581 26.4683C21.4806 28.463 18.6161 29.4603 15.3645 29.4603C11.3387 29.4603 7.85482 28.1561 4.91289 25.5476C1.97096 22.9391 0.499996 19.3333 0.499996 14.7302C0.499997 10.4339 1.97096 6.90477 4.91289 4.14286C7.85483 1.38096 11.3387 2.2825e-06 15.3645 2.63445e-06Z" fill="#333333"></path>
+                </svg>
+            </div>
+         </div>
+         <h6 class="writer">@(Model.Value<string>("founderName"))</h6>
+      </div>
+   </div>
+   
+   <div class="gallery-images-grid">
+      @if (galleryImages != null)
+      {
+          foreach (var image in galleryImages)
+          {
+              <div class="image">
+                  <img src="@(image.Url() ?? "#")" alt="">
+              </div>
+          }
+      }
+   </div>
+   
+   <div class="experience-section">
+      <span class="text">@(Model.Value<string>("experienceText"))</span>
+      <div class="experience-cards">
+         @if (experienceCards != null)
+         {
+             foreach (var card in experienceCards)
+             {
+                 <div class="experience-cards-item">
+                    <div class="counter">@(card.Value<string>("counter"))</div>
+                    <span>@(card.Value<string>("description"))</span>
+                 </div>
+             }
+         }
+      </div>
+   </div>
+   
+   <div class="home-cards">
+      @if (companyValues != null)
+      {
+          foreach (var card in companyValues)
+          {
+              <div class="home-cards-item">
+                  <div class="top">
+                      <div class="icon">
+                          <img src="@(card.Value<IPublishedContent>("icon")?.Url() ?? "#")" alt="@(card.Value<string>("title"))">
+                      </div>
+                      <span class="title">@(card.Value<string>("title"))</span>
+                  </div>
+                  <div class="content">
+                      <span>@(card.Value<string>("description"))</span>
+                  </div>
+              </div>
+          }
+      }
+   </div>
+</div>

@@ -1,0 +1,20 @@
+﻿@model ContentModels.EventCard
+@{
+    var isBigger = (bool?)ViewData["IsBigger"] ?? false;
+}
+
+<div class="last-events-card-item @(isBigger ? "bigger" : "")">
+    <a href="@Model.EventLink?.Url()"></a>
+    <div class="image">
+        <img src="@Model.EventImage?.Url()" alt="">
+    </div>
+    <div class="content">
+        <h5>
+            <div>@Model.EventTitle</div>
+            <div class="icon">
+                @Html.Partial("Icons/ArrowIcon")
+            </div>
+        </h5>
+        <span>@Model.EventDescription</span>
+    </div>
+</div>

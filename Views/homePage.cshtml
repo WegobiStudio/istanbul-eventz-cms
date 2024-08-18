@@ -1,0 +1,197 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HomePage>
+
+@{
+    Layout = "master.cshtml";
+}
+
+@section HeroVideo {
+    <div class="hero-video">
+        <video src="@Model.HeroVideo?.Url()" autoplay muted playsinline loop></video>
+        <div class="video-content">
+            <h1>@Model.HeroTitle<br><strong>@Model.HeroTitleBold</strong></h1>
+        </div>
+    </div>
+}
+
+<div class="page-title-container">
+    <h2>@Model.PageTitle</h2>
+    <span>@Model.PageSubtitle</span>
+</div>
+
+<div class="big-image">
+    <img src="@Model.BigImage?.Url()" alt="">
+</div>
+
+<div class="home-cards">
+    @foreach (var card in Model.CompanyValues)
+    {
+        var cardContent = card.Content as CompanyValueCard;
+        <div class="home-cards-item">
+            <div class="top">
+                <div class="icon">
+                    @Html.Raw(cardContent.Icon)
+                </div>
+                <span class="title">@cardContent.Title</span>
+            </div>
+            <div class="content">
+                <span>@cardContent.Description</span>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="experience-section">
+    <span class="text">@Model.ExperienceText</span>
+    <div class="experience-cards">
+        @foreach (var card in Model.ExperienceCards)
+        {
+            var cardContent = card.Content as ExperienceItem;
+            <div class="experience-cards-item">
+                <div class="counter">@cardContent.Value("counter")</div>
+                <span>@cardContent.Value("description")</span>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="services-ctr">
+    <div class="page-title-container">
+        <h3>@Model.ServicesTitle</h3>
+        <span>@Model.ServicesSubtitle</span>
+    </div>
+    <div class="services-cards">
+        @foreach (var service in Model.ServiceItems)
+        {
+            var serviceContent = service.Content as IPublishedElement;
+            <div class="services-item">
+                <a href="@serviceContent.Value<IPublishedContent>("link")?.Url()"></a>
+                <div class="image">
+                    <img src="@serviceContent.Value<IPublishedContent>("serviceImage")?.Url()" alt="">
+                </div>
+                <div class="content">
+                    <h5>
+                        <div>@serviceContent.Value("serviceTitle")</div>
+                        <div class="icon">
+                            @Html.Partial("Icons/ArrowIcon")
+                        </div>
+                    </h5>
+                    <span>@serviceContent.Value("serviceDescription")</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="last-events">
+    <div class="page-title-container">
+        <h3>@Model.EventsTitle</h3>
+        <span>@Model.EventsSubtitle</span>
+    </div>
+    <div class="last-events-cards">
+        <div class="left">
+            @foreach (var eventItem in Model.EventCards.Take(3))
+            {
+                @Html.Partial("EventCard", eventItem)
+            }
+        </div>
+        <div class="right">
+            @foreach (var eventItem in Model.EventCards.Skip(3).Take(3))
+            {
+                @Html.Partial("EventCard", eventItem, new ViewDataDictionary(ViewData) { { "IsBigger", eventItem == Model.EventCards.Skip(3).Take(3).ElementAt(1) } })
+            }
+        </div>
+    </div>
+</div>
+
+<div class="testimonials">
+    <div class="page-title-container">
+        <h3>@Model.TestimonialsTitle</h3>
+        <span>@Model.TestimonialsSubtitle</span>
+    </div>
+    <div class="testimonials-inner">
+        <div class="left">
+            <div class="splide splide-testimonial" role="group">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        @foreach (var testimonial in Model.Testimonials)
+                        {
+                            var testimonialContent = testimonial.Content as IPublishedElement;
+                            <li class="splide__slide">
+                                <span>@testimonialContent.Value("testimonialText")</span>
+                                <h5>@testimonialContent.Value("testimonialBy")</h5>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="splide__arrows">
+                    @Html.Partial("Icons/NextArrow")
+                    @Html.Partial("Icons/PrevArrow")
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-quote">
+                <div class="quote-image">
+                    <img src="@Model.QuoteImage?.Url()" alt="">
+                </div>
+                <span class="quote-text">@Model.QuoteText</span>
+                <h5 class="quote-author">@Model.QuoteAuthor</h5>
+            </div>
+        </div>
+    </div>
+    <div id="image-slider" class="splide brands-area">
+        <div class="splide__track">
+            <div class="splide__list">
+                @foreach (var brand in Model.Partners)
+                {
+                    var brandContent = brand.Content as IPublishedElement;
+                    <div class="splide__slide brand-item">
+                        <img src="@brandContent.Value<IPublishedContent>("image")?.Url()" alt="">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-us">
+    <div class="page-title-container">
+        <h3>@Model.ContactTitle</h3>
+        <span>@Model.ContactSubtitle</span>
+    </div>
+    <div class="contact-area">
+        <div class="contact-area-offices">
+            @foreach (var office in Model.Offices)
+            {
+                var officeContent = office.Content as IPublishedElement;
+                var phoneNumber = officeContent.Value<string>("phoneNumber");
+                var phoneLink = $"tel:{phoneNumber?.Replace(" ", "")}";
+                <div class="office-item">
+                    <h4>@officeContent.Value("officeName")</h4>
+                    <div class="item">
+                        <a href="#">
+                            <div class="icon">
+                                @Html.Partial("Icons/LocationIcon")
+                            </div>
+                            <span>@officeContent.Value("officeAddress")</span>
+                        </a>
+                    </div>
+                    <div class="item">
+                        <a href="@phoneLink">
+                            <div class="icon">
+                                @Html.Partial("Icons/PhoneIcon")
+                            </div>
+                            <span>@phoneNumber</span>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="contact-area-form">
+            @Html.Partial("ContactForm")
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model ContentModels.HomePage
+
+<form>
+    <div class="form-item-ctr">
+        <div class="form-group">
+            <input type="text" id="name" required placeholder="Name">
+        </div>
+        <div class="form-group">
+            <input type="text" id="surname" required placeholder="Surname">
+        </div>
+    </div>
+    <div class="form-item-ctr">
+        <div class="form-group">
+            <input type="text" id="company" placeholder="Company (optional)">
+        </div>
+        <div class="form-group">
+            <input type="text" id="service" required placeholder="Service">
+        </div>
+    </div>
+    <div class="form-item-ctr">
+        <div class="form-group">
+            <input type="email" id="email" required placeholder="E-Mail">
+        </div>
+        <div class="form-group">
+            <input type="tel" id="phone" required placeholder="Phone Number">
+        </div>
+    </div>
+    <div class="form-group text-area-ctr">
+        <textarea id="message" rows="4" required placeholder="Message" class="m-0"></textarea>
+    </div>
+    <div class="checkbox-group">
+        <label class="checkbox-label">
+            <input type="checkbox" id="privacy-policy" required>
+            I have read and approve the <a href="@Model.PrivacyPolicyLink">Privacy Policy.</a>
+        </label>
+    </div>
+    <button type="submit">Submit</button>
+</form>

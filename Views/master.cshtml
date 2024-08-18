@@ -1,0 +1,31 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>IstanbulEventz</title>
+      <link rel="stylesheet" href="/css/splide.min.css">
+      <link rel="stylesheet" href="/css/style.css">
+      @await RenderSectionAsync("HeadScripts", required: false)
+   </head>
+   <body>
+      @await Html.PartialAsync("Sidebar")
+      <div class="main-content nml">
+         @if (IsSectionDefined("HeroVideo"))
+         {
+             @RenderSection("HeroVideo", required: false)
+         }
+         <div class="sections-container">
+            @RenderBody()
+         </div>
+      </div>
+        <script src="~/Scripts/js/splide.min.js"></script>
+        <script src="~/Scripts/js/script.js"></script>
+      @await RenderSectionAsync("BodyScripts", required: false)
+   </body>
+</html>
