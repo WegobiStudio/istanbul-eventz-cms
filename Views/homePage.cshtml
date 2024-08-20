@@ -7,6 +7,8 @@
 @{
     Layout = "master.cshtml";
     var partnersImages = Model.Value<IEnumerable<IPublishedContent>>("partners");
+    var eventItems = Model.Value<IEnumerable<BlockListItem>>("eventCards")?.Select(x => x.Content);
+    var companyValues = Model.Value<IEnumerable<BlockListItem>>("companyValues")?.Select(x => x.Content);
 
 }
 
@@ -29,25 +31,21 @@
 </div>
 
 <div class="home-cards">
-    @if (Model.CompanyValues != null)
+    @if (companyValues != null)
     {
-        @foreach (var card in Model.CompanyValues)
+        foreach (var card in companyValues)
         {
-            var cardContent = card.Content as CompanyValueCard;
-            if (cardContent != null)
-            {
-                <div class="home-cards-item">
-                    <div class="top">
-                        <div class="icon">
-                            @Html.Raw(cardContent.Icon)
-                        </div>
-                        <span class="title">@cardContent.Title</span>
+            <div class="home-cards-item">
+                <div class="top">
+                    <div class="icon">
+                        <img src="@(card.Value<IPublishedContent>("icon")?.Url() ?? "#")" alt="@(card.Value<string>("title"))">
                     </div>
-                    <div class="content">
-                        <span>@cardContent.Description</span>
-                    </div>
+                    <span class="title">@(card.Value<string>("title"))</span>
                 </div>
-            }
+                <div class="content">
+                    <span>@(card.Value<string>("description"))</span>
+                </div>
+            </div>
         }
     }
 </div>
@@ -110,23 +108,57 @@
         <h3>@Model.EventsTitle</h3>
         <span>@Model.EventsSubtitle</span>
     </div>
+
     <div class="last-events-cards">
         <div class="left">
-            @if (Model.EventCards != null && Model.EventCards.Skip(3).Take(3).Any())
+            @if (eventItems != null)
             {
-                @foreach (var eventItem in Model.EventCards.Take(3))
+                foreach (var eventItem in eventItems.Take(3))
                 {
-                    @await Html.PartialAsync("EventCard", eventItem)
+                    <div class="last-events-card-item">
+                        <a href="@(eventItem.Value<IPublishedContent>("eventLink")?.Url() ?? "#")"></a>
+                        <div class="image">
+                            <img src="@(eventItem.Value<IPublishedContent>("eventImage")?.Url() ?? "#")" alt="@(eventItem.Value<string>("eventTitle"))">
+                        </div>
+                        <div class="content">
+                            <h5>
+                                <div>@(eventItem.Value<string>("eventTitle"))</div>
+                                <div class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="38" height="32" viewBox="0 0 38 32" fill="none">
+                                        <path d="M25.6665 5L36.6665 16L25.6665 27" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M1.6665 16L35.6665 16" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                            </h5>
+                            <span>@(eventItem.Value<string>("eventDescription"))</span>
+                        </div>
+                    </div>
                 }
             }
         </div>
         <div class="right">
-            @if (Model.EventCards != null && Model.EventCards.Skip(3).Take(3).Any())
+            @if (eventItems != null)
             {
-                @foreach (var eventItem in Model.EventCards.Skip(3).Take(3))
+                foreach (var eventItem in eventItems.Skip(3).Take(3))
                 {
-                    var secondEventCard = Model.EventCards.Skip(3).Take(3).ElementAt(1);
-                    @await Html.PartialAsync("EventCard", eventItem, new ViewDataDictionary(ViewData) { { "IsBigger", eventItem == secondEventCard } })
+                    <div class="last-events-card-item @(eventItem == eventItems.Skip(3).Take(3).ElementAt(1) ? "bigger" : "")">
+                        <a href="@(eventItem.Value<IPublishedContent>("eventLink")?.Url() ?? "#")"></a>
+                        <div class="image">
+                            <img src="@(eventItem.Value<IPublishedContent>("eventImage")?.Url() ?? "#")" alt="@(eventItem.Value<string>("eventTitle"))">
+                        </div>
+                        <div class="content">
+                            <h5>
+                                <div>@(eventItem.Value<string>("eventTitle"))</div>
+                                <div class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="38" height="32" viewBox="0 0 38 32" fill="none">
+                                        <path d="M25.6665 5L36.6665 16L25.6665 27" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M1.6665 16L35.6665 16" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                            </h5>
+                            <span>@(eventItem.Value<string>("eventDescription"))</span>
+                        </div>
+                    </div>
                 }
             }
         </div>

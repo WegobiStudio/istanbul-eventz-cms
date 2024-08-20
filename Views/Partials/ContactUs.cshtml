@@ -1,0 +1,42 @@
+﻿@model ContactUsViewModel
+
+<div class="contact-us">
+    <div class="page-title-container">
+        <h3>@Model.ContactTitle</h3>
+        <span>@Model.ContactSubtitle</span>
+    </div>
+    <div class="contact-area">
+        <div class="contact-area-offices">
+            @if (Model.Offices != null)
+            {
+                @foreach (var office in Model.Offices)
+                {
+                    var phoneNumber = office.PhoneNumber;
+                    var phoneLink = $"tel:{phoneNumber?.Replace(" ", "")}";
+                    <div class="office-item">
+                        <h4>@office.OfficeName</h4>
+                        <div class="item">
+                            <a href="#">
+                                <div class="icon">
+                                    @await Html.PartialAsync("Icons/LocationIcon")
+                                </div>
+                                <span>@office.OfficeAddress</span>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="@phoneLink">
+                                <div class="icon">
+                                    @await Html.PartialAsync("Icons/PhoneIcon")
+                                </div>
+                                <span>@phoneNumber</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="contact-area-form">
+            @await Html.PartialAsync("ContactForm")
+        </div>
+    </div>
+</div>

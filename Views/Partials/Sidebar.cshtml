@@ -1,34 +1,36 @@
-﻿<div class="sidebar-desktop">
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+<div class="sidebar-desktop">
    <div class="sidebar__logo">
-      <a href="./index.html"> <img src="./images/header-logo.webp" alt=""></a>
+      <a href="@Url.Content("~/")"> <img src="@Url.Content("~/images/header-logo.webp")" alt=""></a>
    </div>
    <div class="sidebar__logo__black">
-      <a href="./index.html"> <img src="./images/header-logo-black.webp" alt=""></a>
+      <a href="@Url.Content("~/")"> <img src="@Url.Content("~/images/header-logo-black.webp")" alt=""></a>
    </div>
    <div class="sidebar__links">
       <ul>
          <li>
-            <a href="./index.html">
+            <a href="@Url.Content("~/")" class="@(Context.Request.Path == "/" ? "active" : "")">
             Home
             </a>
          </li>
          <li>
-            <a href="./about-us.html">
+            <a href="@Url.Content("~/about-us")" class="@(Context.Request.Path.StartsWithSegments("/about-us") ? "active" : "")">
             About Us
             </a>
          </li>
          <li>
-            <a href="./services.html">
+            <a href="@Url.Content("~/services")" class="@(Context.Request.Path.StartsWithSegments("/services") ? "active" : "")">
             Services
             </a>
          </li>
          <li>
-            <a href="./services.html" class="active">
-            Eventz
+            <a href="@Url.Content("~/events")" class="@(Context.Request.Path.StartsWithSegments("/events") ? "active" : "")">
+            Events
             </a>
          </li>
          <li>
-            <a href="./contact-us.html">
+            <a href="@Url.Content("~/contact-us")" class="@(Context.Request.Path.StartsWithSegments("/contact-us") ? "active" : "")">
             Contact Us
             </a>
          </li>
@@ -82,10 +84,11 @@
       </ul>
    </div>
 </div>
+
 <div class="sidebar-top">
    <div class="top">
       <div class="logo">
-         <a href="./index.html">
+         <a href="@Url.Content("~/")">
          <img src="./images/header-logo-black.webp" alt="">
          </a>
       </div>
@@ -101,9 +104,7 @@
 <div class="sidebar-mobile">
    <div class="top">
       <div class="logo">
-         <a href="./index.html">
-         <img src="./images/header-logo-black.webp" alt="">
-         </a>
+         <a href="@Url.Content("~/")"> <img src="@Url.Content("~/images/header-logo.webp")" alt=""></a>
       </div>
       <button class="close">
          <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
@@ -118,7 +119,7 @@
       <div class="links">
          <ul>
             <li>
-               <a href="./index.html">
+            <a href="@Url.Content("~/")" class="@(Context.Request.Path == "/" ? "active" : "")">
                   <span>
                   Home
                   </span>
@@ -134,7 +135,7 @@
                </a>
             </li>
             <li>
-               <a href="./about-us.html">
+            <a href="@Url.Content("~/about-us")" class="@(Context.Request.Path.StartsWithSegments("/about-us") ? "active" : "")">
                   <span>
                   About Us
                   </span>
@@ -150,7 +151,7 @@
                </a>
             </li>
             <li>
-               <a href="./services.html">
+            <a href="@Url.Content("~/services")" class="@(Context.Request.Path.StartsWithSegments("/services") ? "active" : "")">
                   <span>
                   Services
                   </span>
@@ -166,7 +167,7 @@
                </a>
             </li>
             <li>
-               <a href="./events.html">
+            <a href="@Url.Content("~/events")" class="@(Context.Request.Path.StartsWithSegments("/events") ? "active" : "")">
                   <span>
                   Events
                   </span>
@@ -182,7 +183,7 @@
                </a>
             </li>
             <li>
-               <a href="./contact-us.html">
+            <a href="@Url.Content("~/contact-us")" class="@(Context.Request.Path.StartsWithSegments("/contact-us") ? "active" : "")">
                   <span>
                   Contact Us
                   </span>
