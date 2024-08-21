@@ -1,0 +1,4 @@
+CREATE DATABASE UmbracoDb;
+GO
+USE UmbracoDb;
+GO
