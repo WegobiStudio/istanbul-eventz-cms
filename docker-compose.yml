@@ -22,13 +22,6 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    command: >
-      bash -c '
-      /opt/mssql/bin/sqlservr &
-      sleep 30 &&
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Merve3823ismail. -d master -i /docker-entrypoint-initdb.d/init-db.sql
-      '
     restart: always
 
 volumes:
